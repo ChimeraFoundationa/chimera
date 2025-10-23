@@ -147,7 +147,7 @@ chimera deploy --contract <filename> --network <network|all> --args <args...>
 You can use the Chimera SDK programmatically in your Node.js projects.
 
 ```javascript
-import { Chimera } from '@your-username/chimera/sdk';
+import { Chimera } from 'chimera-forge/sdk';
 
 async function main() {
   const chimera = new Chimera();
