@@ -29,7 +29,7 @@ Install Chimera globally on your system to use the `chimera` command from anywhe
 Install as a dependency in your project.
 
 ```bash
-npm install @your-username/chimera
+npm install chimera-forge
 ```
 
 You can then run the CLI using `npx`:
