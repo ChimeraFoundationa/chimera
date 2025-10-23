@@ -1,20 +1,11 @@
 
 
-Tentu, ini adalah draf `README.md` yang komprehensif dan menarik untuk Chimera v0.1. Salin dan paste ini ke file `README.md` di folder root proyek Anda.
+
 
 ---
 
 ```markdown
 # 🐉 Chimera: The Omnichain Forge
-
-<div align="center">
-
-[![npm version](https://badge.fury.io/js/%40your-username%2Fchimera.svg)](https://badge.fury.io/js/%40your-username%2Fchimera)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-**A powerful multichain Web3 development framework that enables developers to configure multiple chains, compile and deploy contracts, and simulate omnichain interactions with a single command.**
-
-</div>
 
 ## ✨ Features
 
