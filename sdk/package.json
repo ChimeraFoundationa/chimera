@@ -1,0 +1,21 @@
+{
+  "name": "@chimera/sdk",
+  "version": "0.1.0",
+  "description": "SDK for Chimera - The Omnichain Forge",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "ethers": "^6.8.1",
+    "yaml": "^2.3.4",
+    "solc": "^0.8.21"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.10",
+    "typescript": "^5.2.2"
+  }
+}

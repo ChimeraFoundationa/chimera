@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Source files
+src/
+cli/
+sdk/
+utils/
+config/
+contracts/
+
+# Config files
+tsconfig.json
+.gitignore
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Config directory (might contain sensitive info)
+.chimera/
