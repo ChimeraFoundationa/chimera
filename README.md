@@ -207,4 +207,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 
 Made with ❤️ and 🔥 by the Web3 community.
-```
