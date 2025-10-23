@@ -21,9 +21,6 @@
 ### Global Installation (Recommended)
 
 Install Chimera globally on your system to use the `chimera` command from anywhere.
-
-```bash
-npm install -g @chimera-forge
 ```
 
 
