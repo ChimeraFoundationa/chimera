@@ -315,6 +315,35 @@ chimera/
 └── README.md
 ```
 
+## 🧪 Testing
+
+Chimera includes a comprehensive test suite to ensure reliability and correctness of all features. The tests are organized into different categories:
+
+### Unit Tests
+Unit tests focus on individual components and functions. These tests are located in the `tests/unit/` directory and cover:
+- `chimera.test.js` - Tests for the main Chimera class
+- `chainManager.test.js` - Tests for chain management functionality
+- `deployer.test.js` - Tests for contract deployment functionality
+
+### Integration Tests
+Integration tests validate the interaction between different components. These tests are located in the `tests/integration/` directory.
+
+### Running Tests
+
+To run all tests, use the following command:
+
+```bash
+npm test
+```
+
+This will execute all tests using Node.js's built-in test runner.
+
+For more detailed output during testing, you can run:
+
+```bash
+npm test -- --verbose
+```
+
 ## 🤝 Contributing
 
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
