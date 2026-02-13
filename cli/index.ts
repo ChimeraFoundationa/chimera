@@ -5,6 +5,7 @@ import { showBanner } from '../utils/banner.js';
 import { chainCommands } from './commands/chain.js';
 import { deployCommand } from './commands/deploy.js';
 import { initCommand } from './commands/init.js';
+import { testCommand } from './commands/test.js';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
@@ -30,6 +31,9 @@ program.addCommand(deployCommand);
 
 // Add init command
 program.addCommand(initCommand);
+
+// Add test command
+program.addCommand(testCommand);
 
 // Default command to show the banner
 program.action(() => {

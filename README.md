@@ -22,6 +22,7 @@
 -   🔗 **Multichain Management**: Easily add, list, and remove EVM-compatible chain configurations.
 -   🚀 **Omnichain Deployment**: Deploy your smart contracts to one or all configured networks simultaneously.
 -   🛠️ **Project Scaffolding**: Initialize new projects with boilerplate code using `chimera init`.
+-   🧪 **Built-in Testing**: Run tests for your smart contracts using `chimera test`.
 -   🛠️ **Developer-Friendly CLI**: Intuitive and beautiful command-line interface built with `commander.js`.
 -   📦 **Reusable SDK**: Integrate Chimera's capabilities into your own Node.js projects.
 -   ⚙️ **Robust Gas Handling**: Automatically handles gas estimation with fallback mechanisms for unreliable RPCs.
@@ -263,6 +264,20 @@ chimera init [project-directory] [options]
 
 **Options:**
 -   `-f, --force`: Force initialization even if directory is not empty
+
+### Project Testing
+
+#### `chimera test`
+Runs tests for your smart contracts.
+
+```bash
+chimera test [options]
+```
+
+**Options:**
+-   `-f, --file <file>`: Specific test file to run
+-   `-p, --pattern <pattern>`: Pattern to match test files  
+-   `--reporter <reporter>`: Test reporter to use (spec, json, tap). Default: spec
 
 ### Chain Management
 
