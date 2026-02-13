@@ -1,6 +1,6 @@
 {
   "name": "chimera-forge",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "The Omnichain Forge - A multichain Web3 development framework for deploying contracts across multiple networks with a single command.",
   "main": "dist/cli/index.js",
   "type": "module",
@@ -40,7 +40,6 @@
     "url": "git+https://github.com/ChimeraFoundationa/chimera.git"
   },
   "dependencies": {
-    "@chimera/sdk": "file:./sdk",
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
     "ethers": "^6.8.1",
