@@ -75,7 +75,9 @@ function createBoilerplateFiles(projectDir: string, projectName: string): void {
     main: 'index.js',
     scripts: {
       'build': 'tsc',
-      'test': 'node --test tests/**/*.test.js',
+      'test:js': 'node --test tests/**/*.test.js',
+      'test:sol': 'echo "For Solidity tests, use: forge test (with Foundry) or npx hardhat test"',
+      'test': 'npm run test:js',
       'deploy': 'chimera deploy --contract contracts/SimpleStorage.sol --network all'
     },
     keywords: ['web3', 'blockchain', 'ethereum', 'multichain'],
@@ -151,6 +153,27 @@ contract SampleContractTest {
 }
 `;
   writeFileSync(join(projectDir, 'tests', 'SampleContract.t.sol'), sampleTest);
+
+  // Create a JavaScript test example for contract interactions
+  const jsTestExample = `// Sample JavaScript test for contract interactions
+// This demonstrates how to test contract interactions using web3 libraries
+import assert from 'node:assert';
+import { test } from 'node:test';
+
+// Note: This is a template. You'll need to deploy contracts first and update addresses.
+test('SampleContract should store values correctly', async () => {
+  // This is a placeholder test - you'll need to connect to a deployed contract
+  // and test actual interactions
+  assert.ok(true); // Placeholder assertion
+});
+
+test('SampleContract value should be readable', () => {
+  // Example test for contract functionality
+  const initialValue = 42;
+  assert.strictEqual(initialValue, 42, 'Initial value should be 42');
+});
+`;
+  writeFileSync(join(projectDir, 'tests', 'sample-contract.interactions.test.js'), jsTestExample);
 
   // Create a deployment script example
   const deployScript = `// Sample deployment script
