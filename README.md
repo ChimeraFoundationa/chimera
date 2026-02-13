@@ -268,16 +268,18 @@ chimera init [project-directory] [options]
 ### Project Testing
 
 #### `chimera test`
-Runs tests for your smart contracts.
+Runs JavaScript/TypeScript tests for your smart contracts. For Solidity tests, consider using Foundry/Forge.
 
 ```bash
 chimera test [options]
 ```
 
 **Options:**
--   `-f, --file <file>`: Specific test file to run
--   `-p, --pattern <pattern>`: Pattern to match test files  
+-   `-f, --file <file>`: Specific test file to run (JavaScript/TypeScript files)
+-   `-p, --pattern <pattern>`: Pattern to match test files (JavaScript/TypeScript files)  
 -   `--reporter <reporter>`: Test reporter to use (spec, json, tap). Default: spec
+
+**Note:** This command runs JavaScript/TypeScript tests (e.g., testing contract interactions via web3 libraries). For Solidity unit tests (.t.sol files), consider using Foundry/Forge (`forge test`) or Hardhat.
 
 ### Chain Management
 
