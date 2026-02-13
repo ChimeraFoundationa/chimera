@@ -69,43 +69,57 @@ export class Deployer {
     
     const factory = new ethers.ContractFactory(abi, bytecode, wallet);
     
-    // --- PERUBAHAN DIMULAI DI SINI ---
-    // Logika penentuan gas price yang lebih cerdas
-    const gasLimit = 3000000n;
+    // --- START OF IMPROVED GAS ESTIMATION LOGIC ---
+    // More intelligent gas price determination logic
+    let gasLimit: bigint;
     let gasPrice: bigint;
 
     console.log(`🔧 Determining optimal transaction parameters...`);
 
     try {
+        // Prepare the deployment transaction to estimate gas
+        const deployTx = await factory.getDeployTransaction(...(options.args || []));
+        
+        // Estimate gas limit based on the prepared transaction
+        const estimatedGas = await provider.estimateGas({
+            ...deployTx,
+            from: wallet.address
+        });
+        
+        // Add 20% buffer to the estimated gas plus a base amount for safety
+        gasLimit = (estimatedGas * 120n / 100n) + 100000n;
+        
         const feeData = await provider.getFeeData();
 
-        // Prioritaskan maxFeePerGas (EIP-1559), lalu gasPrice (Legacy)
+        // Prioritize maxFeePerGas (EIP-1559), then gasPrice (Legacy)
         if (feeData.maxFeePerGas) {
             gasPrice = feeData.maxFeePerGas;
         } else if (feeData.gasPrice) {
             gasPrice = feeData.gasPrice;
         } else {
-            // Jika provider tidak memberikan data harga, gunakan fallback
+            // If provider doesn't return pricing data, use fallback
             throw new Error("Provider did not return any fee data.");
         }
 
-        // Cek jika harga yang disarankan terlalu rendah (tanda RPC bermasalah)
+        // Check if suggested price is too low (indication of RPC issues)
         const minGasPrice = ethers.parseUnits("0.01", "gwei");
         if (gasPrice < minGasPrice) {
             console.warn(`⚠️  Provider suggested a very low gas price. Applying a safe fallback.`);
-            gasPrice = ethers.parseUnits("0.1", "gwei"); // Fallback yang lebih wajar
+            gasPrice = ethers.parseUnits("0.1", "gwei"); // More reasonable fallback
         }
 
     } catch (error) {
-        console.warn(`⚠️  Could not get fee data from provider. Using a safe fallback.`);
-        // Fallback akhir jika getFeeData() gagal
+        console.warn(`⚠️  Could not estimate gas or get fee data from provider. Using safe defaults.`);
+        // Conservative defaults if estimation fails
+        gasLimit = 3000000n;
+        // Final fallback if getFeeData() fails
         gasPrice = ethers.parseUnits("0.1", "gwei");
     }
 
-    console.log(`   Gas Limit: ${gasLimit}`);
+    console.log(`   Estimated Gas Limit: ${gasLimit}`);
     console.log(`   Final Gas Price: ${ethers.formatUnits(gasPrice, "gwei")} Gwei`);
 
-    // Periksa saldo
+    // Check balance
     const balance = await provider.getBalance(wallet.address);
     const requiredFunds = gasLimit * gasPrice;
     console.log(`   Wallet Balance: ${ethers.formatEther(balance)} ETH`);
@@ -115,12 +129,12 @@ export class Deployer {
         throw new Error(`Insufficient funds. Required: ${ethers.formatEther(requiredFunds)} ETH, but you only have ${ethers.formatEther(balance)} ETH.`);
     }
 
-    // Lewatkan gasLimit dan gasPrice yang sudah ditentukan
+    // Pass the determined gasLimit and gasPrice
     const contract = await factory.deploy(
       ...(options.args || []),
-      { gasLimit, gasPrice, type: 0 } // Tetap gunakan transaksi legacy untuk kompatibilitas
+      { gasLimit, gasPrice } // Use appropriate transaction type based on network support
     );
-    // --- PERUBAHAN SELESAI DI SINI ---
+    // --- END OF IMPROVED GAS ESTIMATION LOGIC ---
     
     const deploymentTx = contract.deploymentTransaction();
     if (!deploymentTx) {

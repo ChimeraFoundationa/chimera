@@ -53,6 +53,10 @@ export const deployCommand = new Command('deploy')
         }
         console.log(chalk.bold.cyan('\n=============================================\n'));
         logSuccess('Your contract now lives across multiple chains!');
+        
+        // Suggest contract verification to the user
+        console.log(chalk.yellow('\n📝 Next Step: Verify your contracts on the block explorers for transparency and security.'));
+        console.log(chalk.yellow('   Visit the explorer URLs in your chain configuration to verify the source code.'));
       }).catch((error) => {
         if (error.message !== 'Private key is required.') {
             logError(`The forging process failed: ${error.message}`);

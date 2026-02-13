@@ -7,14 +7,26 @@
 ```markdown
 # 🐉 Chimera: The Omnichain Forge
 
+```
+╔═══════════════════════════════════════╗
+║                                       ║
+║              Chimera              ║
+║                                       ║
+╚═══════════════════════════════════════╝
+```
+
+       Chimera  The Omnichain Forge
+
 ## ✨ Features
 
 -   🔗 **Multichain Management**: Easily add, list, and remove EVM-compatible chain configurations.
 -   🚀 **Omnichain Deployment**: Deploy your smart contracts to one or all configured networks simultaneously.
+-   🛠️ **Project Scaffolding**: Initialize new projects with boilerplate code using `chimera init`.
 -   🛠️ **Developer-Friendly CLI**: Intuitive and beautiful command-line interface built with `commander.js`.
 -   📦 **Reusable SDK**: Integrate Chimera's capabilities into your own Node.js projects.
 -   ⚙️ **Robust Gas Handling**: Automatically handles gas estimation with fallback mechanisms for unreliable RPCs.
 -   🔐 **Secure**: Promotes best practices by using environment variables for private keys.
+-   ✅ **Automatic Chain Validation**: Validates RPC endpoints and chain IDs when adding new chains to prevent configuration errors.
 
 ## 📦 Installation
 
@@ -118,11 +130,17 @@ Deploy an NFT collection contract across multiple chains for broader accessibili
 chimera deploy --contract NFTCollection.sol --network all --args "My NFT Collection" "NFTC" "https://api.my-nft-collection.com/metadata/" "1000"
 ```
 
-### Example 5: Batch Operations
+### Example 5: Project Initialization and Batch Operations
 
-Perform batch operations across multiple chains:
+Initialize a new project and perform batch operations:
 
 ```bash
+# Initialize a new project
+chimera init my-multichain-dapp
+
+# Navigate to your project
+cd my-multichain-dapp
+
 # Add multiple chains in sequence
 chimera chain:add --name "Arbitrum Sepolia" --chainId 421614 --rpc https://sepolia-rollup.arbitrum.io/rpc --explorer https://sepolia.arbiscan.io
 chimera chain:add --name "Linea Sepolia" --chainId 59141 --rpc https://rpc.sepolia.linea.build --explorer https://sepolia.lineascan.build
@@ -169,7 +187,7 @@ chains:
    chimera chain:add --name "Ethereum Mainnet" --chainId 1 --rpc https://mainnet.infura.io/v3/YOUR_INFURA_ID --explorer https://etherscan.io
    ```
 
-3. **Verify your contracts** - After deployment, verify on the respective block explorers using the addresses provided in the output.
+3. **Verify your contracts** - After deployment, Chimera will guide you to verify on the respective block explorers using the addresses provided in the output.
 
 ### Advanced Deployment Patterns
 
@@ -208,19 +226,43 @@ chains:
    # You can use block explorers or web3 libraries to verify
    ```
 
-2. **RPC Rate Limits** - If you encounter rate limiting:
+2. **Invalid Chain Configuration** - If you get connection errors when adding a chain, verify:
+   - The RPC URL is correct and accessible
+   - The chain ID matches the network you're connecting to
+   - Your internet connection is stable
+   ```bash
+   # Chimera validates chains automatically when adding them
+   chimera chain:add --name "Ethereum Sepolia" --chainId 11155111 --rpc https://rpc.sepolia.org
+   ```
+
+3. **RPC Rate Limits** - If you encounter rate limiting:
    ```bash
    # Use premium RPC services like Infura, Alchemy, or Ankr
    chimera chain:add --name "Ethereum Mainnet" --chainId 1 --rpc https://mainnet.infura.io/v3/YOUR_PROJECT_ID
    ```
 
-3. **Network Congestion** - During high gas periods:
+4. **Network Congestion** - During high gas periods:
    ```bash
    # Consider deploying during off-peak hours
    # Or adjust your gas strategy in the contract if possible
    ```
 
 ## 📖 CLI Commands Reference
+
+### Project Initialization
+
+#### `chimera init`
+Initializes a new Chimera project with boilerplate files and directory structure.
+
+```bash
+chimera init [project-directory] [options]
+```
+
+**Arguments:**
+-   `[project-directory]`: Project directory name (defaults to current directory)
+
+**Options:**
+-   `-f, --force`: Force initialization even if directory is not empty
 
 ### Chain Management
 

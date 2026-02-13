@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
 import { parse, stringify } from 'yaml';
+import { ethers } from 'ethers';
 
 export interface ChainConfig {
   name: string;
@@ -62,17 +63,37 @@ export class ChainManager {
     return config.chains || [];
   }
 
+  private async validateChainConnection(chain: ChainConfig): Promise<boolean> {
+    try {
+      const provider = new ethers.JsonRpcProvider(chain.rpc);
+      // Attempt to get the network info to verify the RPC is working
+      const network = await provider.getNetwork();
+      
+      // Check if the chainId matches what was provided
+      if (network.chainId !== BigInt(chain.chainId)) {
+        throw new Error(`Chain ID mismatch: Expected ${chain.chainId}, got ${network.chainId.toString()}`);
+      }
+      
+      return true;
+    } catch (error) {
+      throw new Error(`Could not connect to RPC endpoint: ${(error as Error).message}`);
+    }
+  }
+
   async addChain(chain: ChainConfig): Promise<void> {
     const config = this.readConfig();
-    
-    const existingChain = config.chains.find((c: ChainConfig) => 
+
+    const existingChain = config.chains.find((c: ChainConfig) =>
       c.name === chain.name || c.chainId === chain.chainId
     );
-    
+
     if (existingChain) {
       throw new Error(`Chain with name "${chain.name}" or chainId ${chain.chainId} already exists`);
     }
-    
+
+    // Validate the chain connection before adding
+    await this.validateChainConnection(chain);
+
     config.chains.push(chain);
     this.writeConfig(config);
   }

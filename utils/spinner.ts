@@ -6,18 +6,18 @@ export const withSpinner = async <T>(
 ): Promise<T> => {
   const spinner: Ora = ora({
     text: text,
-    spinner: 'dots12', // Gaya spinner yang lebih menarik
-    color: 'cyan'
+    spinner: 'clock', // Clean spinner style
+    color: 'blue'
   }).start();
-  
+
   try {
     const result = await task();
-    // PERBAIKAN: Lewatkan pesan sebagai string, bukan object
-    spinner.succeed('✨ ' + text.replace('...', ' complete!'));
+    // FIX: Pass message as string, not object
+    spinner.succeed(text.replace('...', ': done'));
     return result;
   } catch (error) {
-    // PERBAIKAN: Lewatkan pesan sebagai string, bukan object
-    spinner.fail('❌ ' + text.replace('...', ' failed!'));
+    // FIX: Pass message as string, not object
+    spinner.fail(text.replace('...', ': failed'));
     throw error;
   }
 };
