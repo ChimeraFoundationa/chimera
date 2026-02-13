@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import { logSuccess, logError, logInfo } from '../../utils/logger.js';
 import { withSpinner } from '../../utils/spinner.js';
 import { spawn } from 'child_process';
+import { SolidityTester } from '../../utils/solidityTester.js';
 
 export const testCommand = new Command('test')
   .description('Run tests for your smart contracts')
@@ -30,29 +31,32 @@ export const testCommand = new Command('test')
   });
 
 async function runTests(options: { file?: string; pattern?: string; reporter: string }) {
+  // Determine test files to run
+  let testGlob = 'tests/**/*.test.js';
+  
+  if (options.file) {
+    // If a specific file is provided
+    testGlob = options.file;
+  } else if (options.pattern) {
+    // If a pattern is provided
+    testGlob = `tests/**/${options.pattern}`;
+  }
+
+  // Check if we're dealing with Solidity test files (.sol)
+  if (testGlob.endsWith('.sol')) {
+    // Handle Solidity tests with our internal tester
+    const tester = new SolidityTester();
+    const success = await tester.runSolTests(testGlob);
+    if (success) {
+      logSuccess('Solidity tests completed successfully!');
+    } else {
+      logError('Solidity tests failed.');
+    }
+    return;
+  }
+
+  // Handle JavaScript/TypeScript tests with Node.js test runner
   return new Promise<void>((resolve, reject) => {
-    // Determine test files to run
-    let testGlob = 'tests/**/*.test.js';
-    
-    if (options.file) {
-      // If a specific file is provided
-      testGlob = options.file;
-    } else if (options.pattern) {
-      // If a pattern is provided
-      testGlob = `tests/**/${options.pattern}`;
-    }
-
-    // Check if we're dealing with Solidity test files (.t.sol)
-    if (testGlob.includes('.sol')) {
-      // For Solidity files, we'd typically use a tool like Foundry/Forge
-      // For now, we'll show a helpful message
-      logInfo('For Solidity contract testing, consider using Foundry/Forge:');
-      logInfo('  forge test');
-      logInfo('Or set up Hardhat for JavaScript-based contract testing.');
-      resolve(); // Resolve early since we can't run Solidity tests directly
-      return;
-    }
-
     // Use Node.js built-in test runner for JS/TS test files
     const args = [
       '--test',
