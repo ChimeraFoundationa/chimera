@@ -1,0 +1,9 @@
+chains:
+  - name: Ethereum Sepolia
+    rpc: https://rpc.sepolia.org
+    chainId: 11155111
+    explorer: https://sepolia.etherscan.io
+  - name: Scroll Sepolia
+    rpc: https://sepolia-rpc.scroll.io
+    chainId: 534351
+    explorer: https://sepolia.scrollscan.com
